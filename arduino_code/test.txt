@@ -1,0 +1,82 @@
+void Test(char motor)
+{
+  switch(motor)
+  {
+    case 'A':
+      Esc0.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'a':
+      Esc0.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break;
+    case 'B':
+      Esc1.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'b':
+      Esc1.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break;
+    case 'C':
+      Esc2.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'c':
+      Esc2.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break;
+    case 'D':
+      Esc3.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'd':
+      Esc3.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break;
+    case 'E':
+      liftEsc_1.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'e':
+      liftEsc_1.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break;   
+    case 'F':
+      liftEsc_2.writeMicroseconds(ESC_FORWARD_LIMIT);
+      break;
+    case 'f':
+      liftEsc_2.writeMicroseconds(ESC_BACKWARD_LIMIT);
+      break; 
+    case 'G':
+      digitalWrite(LED1,LOW);
+      break; 
+    case 'g':
+     digitalWrite(LED1,HIGH);
+      break; 
+    case 'H':
+      digitalWrite(LED2,LOW);
+      break; 
+    case 'h':
+      digitalWrite(LED2,HIGH);
+      break;
+      case 'I':
+      analogWrite(GRIPPER1_PWM_PIN, GRIPPER_SPEED);
+      digitalWrite(GRIPPER1_DIR_PIN, GRIPPER_OPEN_STATE);
+      break;
+    case 'i':
+      analogWrite(GRIPPER1_PWM_PIN, GRIPPER_SPEED);
+      digitalWrite(GRIPPER1_DIR_PIN, GRIPPER_CLOSE_STATE);
+      break;
+    case 'J':
+      analogWrite(GRIPPER2_PWM_PIN, GRIPPER_SPEED);
+      digitalWrite(GRIPPER2_DIR_PIN, GRIPPER_OPEN_STATE);
+      break;
+    case 'j':
+      analogWrite(GRIPPER2_PWM_PIN, GRIPPER_SPEED);
+      digitalWrite(GRIPPER2_DIR_PIN, GRIPPER_CLOSE_STATE);
+      break; 
+    case 'S':
+      Esc0.writeMicroseconds(ESC_STOP);
+      Esc1.writeMicroseconds(ESC_STOP);
+      Esc2.writeMicroseconds(ESC_STOP);
+      Esc3.writeMicroseconds(ESC_STOP);
+      liftEsc_1.writeMicroseconds(ESC_STOP);
+      liftEsc_2.writeMicroseconds(ESC_STOP);
+      analogWrite(GRIPPER1_PWM_PIN, GRIPPER_STOP);
+      analogWrite(GRIPPER2_PWM_PIN, GRIPPER_STOP);
+    
+  }
+}
+
+

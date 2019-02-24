@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROV 2019</title>
+    <link rel="stylesheet" type="text/css" href="/main.min.css?t={time} class=square" />
+    <script
+        src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+        crossorigin="anonymous"
+    ></script>
+    <script src="/output_handler.js"></script>
+    <script src="/request_handler.js"></script>
+    <script src="/gamepad_handler.js"></script>
+    <script src="/input_mappings.js?t={time}"></script>
+    <script src="/output_mappings.js?t={time}"></script>
+    <script src="/main.js?t={time}"></script>
+</head>
+<body>
+    <div class="section">
+        <div class="control-box box">
+            <!-- Icon by Dave Gandy -->
+            <div class="spacer"></div>
+            <button id="f" class="square"><img src="/caret.svg" alt="Forward"></button>
+            <div class="spacer"></div>
+            <div class="spacer"></div>
+            <button id="u" class="square"><img src="/caret.svg" alt="Up"></button>
+            <button id="l" class="square"><img src="/caret.svg" alt="Left"></button>
+            <button id="b" class="square"><img src="/caret.svg" alt="Backward"></button>
+            <button id="r" class="square"><img src="/caret.svg" alt="Right"></button>
+            <div class="spacer"></div>
+            <button id="d" class="square"><img src="/caret.svg" alt="Down"></button>
+        </div>
+        <div class="mode-box box">
+            <button id="mode_free" class="mode">Free Movement Mode</button>
+            <button id="mode_line" class="mode">Line Following Mode</button>
+            <button id="mode_micro" class="mode">Micro-ROV Mode</button>
+        </div>
+        <div class="action-box box">
+            <button id="shape_task" class="action">Begin Shape Counting Task</button>
+            <button id="cannon_task" class="action">Begin Shape Counting Task</button>
+        </div>
+        <pre id="stdout"></pre>
+        <div class="checkboxes">
+            <label><input type="checkbox" value="1" id="refresh_auto" checked> Get Buffer Automatically</label>
+            <button id="refresh_once" class="small">Get Buffer</button>
+        </div>
+    </div>
+    <div class="section">
+        <div class="sensor-box box">
+            <div id="sensor_metal" alt="Green if there is metal!">No Reading Yet</div>
+        </div>
+        <div class="cannon-box box">
+            <form id="cannon_calc">
+                <input type="text" name="cannon_r1" placeholder="R1 in meters">
+                <input type="text" name="cannon_r2" placeholder="R2 in meters">
+                <input type="text" name="cannon_r3" placeholder="R3 in meters">
+                <input type="text" name="cannon_l" placeholder="L in meters">
+                <input type="text" name="cannon_p" placeholder="Density in kg/m^3">
+                <button class="action">Calculate</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
