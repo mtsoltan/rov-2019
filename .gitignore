@@ -1,0 +1,8 @@
+venv/
+__ignore/
+.idea/
+__pycache__/
+*.dll
+*.min.css
+*.min.css.map
+*.td
