@@ -4,10 +4,9 @@ const GRAVITATIONAL_ACCELERATION = 9.81; // meter / second^2
 
 const ROV_MAX_FORCE = 58; // newton
 const ROV_WEIGHT_IN_WATER = 9.8; // newton
-const ROV_DRAG_FORCE = 0; // netwon
+const ROV_DRAG_FORCE = 0; // newton
 
-const REFRESH_TIME = 75;
-const GAMEPAD_CHECK_TIME = 25;
+const REFRESH_TIME = 1000;
 
 let oh = new OutputHandler();
 let rh = new RequestHandler(oh);
@@ -16,20 +15,8 @@ let gh = new GamepadHandler();
 fillMappings(gh);
 gh.initializeGamepadIndex();
 
-function activate (key) {
-    if (guiButtonMapping[key]) $(`.control-box button#${guiButtonMapping[key]}`).addClass('active');
-}
-
-function deactivate (key) {
-    if (guiButtonMapping[key]) $(`.control-box button#${guiButtonMapping[key]}`).removeClass('active');
-}
-
-function sendHalt (key) {
-    if (movementButtons.includes(key)) rh.postFetch('/move_free_drive', buttonMapping[MOVE_HALT], null);
-    if (gripperButtons.includes(key)) rh.postFetch('/move_free_drive', buttonMapping[GRIPPER_HALT], null);
-}
-
 $(function () {
+    setupGamepadMain();
     $('.control-box button').prop('disabled', 'disabled'); // Direction buttons cannot be used.
     rh.postFetch('/get_mode', '', function (result) {
         $('#' + result).addClass('active');
@@ -44,46 +31,6 @@ $(function () {
     }, REFRESH_TIME);
     $('#refresh_once').click(function () {
         rh.postFetch('/flush_buffer', '');
-    });
-
-    gh.initializeGamepadListener(function (button, type) {
-        let key = buttonMapping[button];
-        if (type === 'press') {
-            rh.postFetch('/move_free_drive', key, null);
-            activate(key);
-        } else {
-            sendHalt(key);
-            deactivate(key);
-        }
-    }, function (axis, value) {
-        let key = axesMapping[axis][~~(value > 0)];
-        if (Math.abs(value - 0) > 0.5) {
-            rh.postFetch('/move_free_drive', key, null);
-            activate(key);
-        } else {
-            sendHalt(key);
-            axesMapping[axis].forEach(function (o) {
-                deactivate(o);
-            });
-        }
-    });
-
-    $(window).on('keydown', function (ev) {
-        let key = ev.key;
-        if (true) { // Free keys
-            if (!key.match(/^[a-zA-Z0-9]$/)) return;
-            rh.postFetch('/move_free_drive', key, null);
-            if (guiButtonMapping[key]) $(`.control-box button#${guiButtonMapping[key]}`).addClass('active');
-        }
-    });
-
-    $(window).on('keyup', function (ev) {
-        let key = ev.key;
-        if (true) { // Free keys
-            if (movementButtons.includes(key)) rh.postFetch('/move_free_drive', buttonMapping[MOVE_HALT], null);
-            if (gripperButtons.includes(key)) rh.postFetch('/move_free_drive', buttonMapping[GRIPPER_HALT], null);
-            if (guiButtonMapping[key]) $(`.control-box button#${guiButtonMapping[key]}`).removeClass('active');
-        }
     });
 
     $('.mode').click(function () {

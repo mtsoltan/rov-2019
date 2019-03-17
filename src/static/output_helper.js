@@ -1,12 +1,11 @@
 function mapString(str, outputHandler) {
-            console.log(str);
     let letter = str[0];
     switch (letter) {
         case 'M':
             if(parseInt(str.substr(1))) {
-                $('#sensor_metal').addClass('active').text('Metal');
+                $('#sensor_metal').addClass('active').find('span').text('Metal');
             } else {
-                $('#sensor_metal').removeClass('active').text('Not Metal');
+                $('#sensor_metal').removeClass('active').find('span').text('Not Metal');
             }
             break;
         case 'E':

@@ -3,7 +3,8 @@
 @button-bg-hover: linear-gradient(#cffaff, #97e8f5);
 @button-bg: linear-gradient(#ffffff, #d9d9d9);
 @button-border-color: #c0c0c0;
-@no-metal-color: #f00;
+@no-metal-color: #800;
+@metal-color: #080;
 @button-size-sq: 100px;
 @default-font-size: 12px;
 
@@ -119,12 +120,27 @@ input[type=text] {
 
 .sensor-box {
     #sensor_metal {
-        display: relative;
+        display: flex;
+        height: 0.25 * @button-size-sq;
+        justify-content: center;
+        align-content: center;
+        & span {
+            display: block;
+            height: 0.25 * @button-size-sq;
+            padding: (0.25 * @button-size-sq - @default-font-size) / 3;
+        }
         &:before {
-            display: absolute;
-            width: 0.1 * @button-size-sq;
+            content: '.';
+            font-size: 0;
+            position: relative;
+            display: block;
+            margin-right: @default-font-size / 3;
+            .square(0.25 * @button-size-sq);
             border-radius: 50%;
             background-color: @no-metal-color;
+        }
+        &.active:before {
+            background-color: @metal-color;
         }
     }
 }

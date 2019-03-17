@@ -1,24 +1,25 @@
 from WebServer import WebServer
-from Actions import Actions
+from Actions import Actions, Robot
+from atexit import register as register_exit_event
+
 
 def main() -> int:
-    actions = None
     server = WebServer(port=8085)
-    actions = Actions(port=3)
+    robot = Robot(port=6)
+    actions = Actions(robot=robot)
+    robot.set_handler(actions.on_read)
     for name, action in actions.list.items():
         server.add_rule(name, action)
-    #try:
     server.run()
-    while True:
-        robot_out = actions.read_from_robot()
-        print(robot_out)
-        if len(robot_out):
-            actions.buffer.append(robot_out)
-    #except Exception:  # KeyboardInterrupt
-    #    print('^C received, shutting down the program.')
-    actions.serial.close()
-        # server.close()
+    actions.run()
+
+    def on_exit():
+        robot.close()
+        server.close()
+
+    register_exit_event(on_exit)
     return 0
+
 
 if __name__ == "__main__":
     main()

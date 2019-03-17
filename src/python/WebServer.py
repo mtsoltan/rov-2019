@@ -2,10 +2,12 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import urlparse, ParseResult
 from threading import Thread
-from typing import Callable, Tuple
+from typing import Callable, Union, Tuple, Optional
 import os
 import sys
 import time
+
+Response = Union[Tuple[int, str], int, str]
 
 STATIC_DIR = os.path.join('..', 'static')
 ERROR = 'error.html'
@@ -38,7 +40,7 @@ class ExtendedServerHandler(ThreadingMixIn, BaseHTTPRequestHandler):
         self.wfile.write(bytes(content, 'UTF-8'))
 
     @staticmethod
-    def check_mime(path: str):
+    def check_mime(path: str) -> Optional[str]:
         mime = None
         if path.endswith(".html"):
             mime = 'text/html'
@@ -59,7 +61,7 @@ class ExtendedServerHandler(ThreadingMixIn, BaseHTTPRequestHandler):
         return mime
 
     @staticmethod
-    def normalize(*paths: str):
+    def normalize(*paths: str) -> str:
         return os.path.normpath(os.path.join(sys.path[0], *paths))
 
     def log_message(self, form, *args):
@@ -90,7 +92,6 @@ class ExtendedServerHandler(ThreadingMixIn, BaseHTTPRequestHandler):
         except IOError:
             self.error(404, 'Could not find the file you requested to open.')
             return
-
 
     def do_POST(self):
         if self.path == "/":
@@ -136,7 +137,7 @@ class WebServer(ThreadingMixIn):
 
     def run(self):
         self.server_thread = Thread(target=self.server.serve_forever)
-        self.server_thread.deamon = False
+        self.server_thread.daemon = False
         self.server_thread.start()
 
     def close(self):
@@ -145,7 +146,7 @@ class WebServer(ThreadingMixIn):
     def add_rule(self, name, callback: Callable):
         self.rules[name] = callback
 
-    def loop_on_rules(self, request: dict):
+    def loop_on_rules(self, request: dict) -> Response:
         for key in self.rules:
             if request['urlobj'].path == key:
                 return self.rules[key](request['body'].decode("utf-8"))

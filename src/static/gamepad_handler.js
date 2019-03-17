@@ -1,21 +1,5 @@
-const DEBUG_GAMEPAD_HANDLER = true;
-
-/**
- * Gamepad Layout:
- * 4 Arrows and LJ -> Axes
- * B1 / RJ Up -> 0
- * B2 / RJ Right -> 1
- * B3 / RJ Down -> 2
- * B4 / RJ Left -> 3
- * L1 -> 4
- * R1 -> 5
- * L2 -> 6
- * R2 -> 7
- * B9 / Turbo -> 8
- * B10 / Clear -> 9
- * L3 -> 10
- * R3 -> 11
- */
+const DEBUG_GAMEPAD_HANDLER = false;
+const GAMEPAD_CHECK_TIME = 25;
 
 const GamepadHandler = function () {
     let _THIS = this;
@@ -45,12 +29,14 @@ const GamepadHandler = function () {
         axes : [],
         buttons: [],
     };
+
     _THIS.initializeGamepadIndex = function () {
         window.addEventListener("gamepadconnected", function(e) {
             _THIS.gpIndex = e.gamepad.index;
             if (DEBUG_GAMEPAD_HANDLER) console.log('Gamepad connected.');
         });
     };
+
     _THIS.fillPreviousState = function (gamepadObject) {
             gamepadObject.buttons.forEach(function (button, index) {
                 _THIS.previousState.buttons[index] = button.pressed;
@@ -59,6 +45,7 @@ const GamepadHandler = function () {
                 _THIS.previousState.axes[index] = axis;
             });
     };
+
     _THIS.initializeGamepadListener = function (onButtonChange, onAxesChange) {
         if (_THIS.hasListener()) return;
         _THIS.listener = window.setInterval(function () {
@@ -83,11 +70,13 @@ const GamepadHandler = function () {
             _THIS.fillPreviousState(gp);
         }, GAMEPAD_CHECK_TIME);
     };
+
     _THIS.destroyGamepadListener = function () {
         if (!_THIS.hasListener()) return;
         window.clearInterval(_THIS.listener);
         _THIS.listener = null;
     };
+
     _THIS.hasListener = function () {
         return _THIS.listener !== null;
     };
