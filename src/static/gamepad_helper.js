@@ -47,6 +47,7 @@ let free_keys = false;
  * @param {string} key - A 1-letter string.
  */
 function activate (key) {
+    key = key.toLowerCase();
     if (viewMapping[key]) $(KEY_SELECTOR + viewMapping[key]).addClass('active');
 }
 
@@ -55,6 +56,7 @@ function activate (key) {
  * @param {string} key - A 1-letter string.
  */
 function deactivate (key) {
+    key = key.toLowerCase();
     if (viewMapping[key]) $(KEY_SELECTOR + viewMapping[key]).removeClass('active');
 }
 

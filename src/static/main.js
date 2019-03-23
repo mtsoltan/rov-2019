@@ -6,7 +6,7 @@ const ROV_MAX_FORCE = 58; // newton
 const ROV_WEIGHT_IN_WATER = 9.8; // newton
 const ROV_DRAG_FORCE = 0; // newton
 
-const REFRESH_TIME = 1000;
+const REFRESH_TIME = 100;
 
 let oh = new OutputHandler();
 let rh = new RequestHandler(oh);
@@ -16,7 +16,10 @@ fillMappings(gh);
 gh.initializeGamepadIndex();
 
 $(function () {
+    // let s = startSocket(oh);
+
     setupGamepadMain();
+
     $('.control-box button').prop('disabled', 'disabled'); // Direction buttons cannot be used.
     rh.postFetch('/get_mode', '', function (result) {
         $('#' + result).addClass('active');
@@ -27,10 +30,15 @@ $(function () {
             rh.postFetch('/flush_buffer', '', function (response) {
                 mapString(response, oh);
             });
+            // s.send('')
         }
     }, REFRESH_TIME);
+
+
     $('#refresh_once').click(function () {
-        rh.postFetch('/flush_buffer', '');
+        rh.postFetch('/flush_buffer', '', function (response) {
+            mapString(response, oh);
+        });
     });
 
     $('.mode').click(function () {

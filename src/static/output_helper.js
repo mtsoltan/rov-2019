@@ -9,6 +9,7 @@ function mapString(str, outputHandler) {
             }
             break;
         case 'E':
+        case 'F':
             outputHandler.print(str.substr(1));
             break;
     }

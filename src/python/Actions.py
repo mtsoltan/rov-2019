@@ -18,6 +18,10 @@ class Actions:
 
         self.robot = robot
         self.buffer = []
+        self.VALID_CODES = [
+            'M',  # Metal
+            'E',  # Error
+        ]
         self.FLAG_IN_SHAPE_TASK = 'in_shape_task'
         self.ACTION_MOVE_FREE_DRIVE = 'move_free_drive'
         self.ACTION_FLUSH_BUFFER = 'flush_buffer'
@@ -79,7 +83,10 @@ class Actions:
     def flush_buffer(self, _: str) -> Response:
         temp = '\n'.join(self.buffer)
         self.buffer = []
-        return temp
+        for l in self.VALID_CODES:
+            if temp.startswith(l):
+                return temp
+        return temp and 'F' + temp or temp
 
     async def handle_ws_request(self, websocket, _):
         async for _ in websocket:
