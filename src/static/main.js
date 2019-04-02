@@ -54,6 +54,18 @@ $(function () {
     $('#mode_micro').click(function () {
         rh.postFetch('/mode_micro', '', function() {});
     });
+    $('#shape_task').click(function () {
+        rh.postFetch('/shape_task', '');
+    });
+    $('#cannon_task_s').click(function () {
+        rh.postFetch('/cannon_task_s', '');
+    });
+    $('#cannon_task_f').click(function () {
+        rh.postFetch('/cannon_task_f', '');
+    });
+    $('#cannon_task_b').click(function () {
+        rh.postFetch('/cannon_task_b', '');
+    });
 
     $('#cannon_calc').submit(function () {
         let l = parseFloat(this.cannon_l.value);
